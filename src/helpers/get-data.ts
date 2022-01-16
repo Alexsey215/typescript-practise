@@ -1,6 +1,6 @@
 export const getUserData = () => {
   const ls = window.localStorage;
-  const userActualData = ls.getItem('user') as unknown;
+  const userActualData = ls.getItem('user') as unknown as string;
   return JSON.parse(userActualData as string);
 }
 export const getFavoritesAmount = () => {
