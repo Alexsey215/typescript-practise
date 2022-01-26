@@ -1,6 +1,6 @@
 import { renderBlock } from './lib.js'
 
-export function renderUserBlock (userName: string, userAvatar: string, favoriteItemsAmount: number) {
+export function renderUserBlock (userName: string , userAvatar: string, favoriteItemsAmount?: number) {
   const favoritesCaption = favoriteItemsAmount ? favoriteItemsAmount : 'ничего нет'
   const hasFavoriteItems = !!favoriteItemsAmount;
 
@@ -8,7 +8,7 @@ export function renderUserBlock (userName: string, userAvatar: string, favoriteI
     'user-block',
     `
     <div class="header-container">
-      <img class="avatar" src=${userAvatar} alt="Wade Warren" />
+      <img class="avatar" src=${userAvatar} alt=${userAvatar}/>
       <div class="info">
           <p class="name">${userName}</p>
           <p class="fav">

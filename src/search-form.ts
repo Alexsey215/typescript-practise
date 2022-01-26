@@ -1,15 +1,17 @@
 import { renderBlock } from './lib.js'
+import {getDateString, getNextMonthLastDay, getPlusTwoDays, getTomorrow} from "./helpers/date-manage.js";
+import {Place, SearchFormData} from "./interfaces/searchFormDataInterface.js";
+import {search} from "./helpers/search.js";
 
-export function renderSearchFormBlock (checkIn, checkOut) {
-  const today = new Date();
-
-  let minDate: string = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate());
-  let maxDate: string = today.getMonth() !== 11 ?
-    today.getFullYear() + '-' + (new Date().getMonth()+1)%12 + 1 + '-' + new Date(today.getFullYear(),today.getMonth() + 1, 0).getDate() :
-    (today.getFullYear() + 1) + '-' + (new Date().getMonth()+1)%12 + 1 + '-' + new Date(today.getFullYear(),today.getMonth() + 1, 0).getDate();
-
-  const defaultMinDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() + 1);
-  const defaultMaxDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + (today.getDate() + 2);
+export function renderSearchFormBlock (arrivalDate: Date = getTomorrow(), leavingDate: Date = getPlusTwoDays(arrivalDate)) {
+  const arrivalString = getDateString(arrivalDate);
+  const leavingString = getDateString(leavingDate);
+  const minDate = getDateString(new Date());
+  const maxDate = getDateString(getNextMonthLastDay());
+  const searchData: SearchFormData = {
+    arrivalDate: arrivalString,
+    leavingDate: leavingString
+  }
 
   renderBlock(
     'search-form-block',
@@ -31,18 +33,18 @@ export function renderSearchFormBlock (checkIn, checkOut) {
         <div class="row">
           <div>
             <label for="check-in-date">Дата заезда</label>
-            <input id="check-in-date" type="date" value=${!!checkIn ? checkIn: defaultMinDate} min=${minDate} max=${maxDate} name="checkin" />
+            <input id="check-in-date" type="date" value=${arrivalString} min=${minDate} max=${maxDate} name="checkin" />
           </div>
           <div>
             <label for="check-out-date">Дата выезда</label>
-            <input id="check-out-date" type="date" value=${!!checkOut ? checkOut: defaultMaxDate} min=${minDate} max=${maxDate} name="checkout" />
+            <input id="check-out-date" type="date" value=${leavingString} min=${minDate} max=${maxDate} name="checkout" />
           </div>
           <div>
             <label for="max-price">Макс. цена суток</label>
             <input id="max-price" type="text" value="" name="price" class="max-price" />
           </div>
           <div>
-            <div><button>Найти</button></div>
+            <div><button type="button" id="search-btn">Найти</button></div>
           </div>
           
         </div>
@@ -50,4 +52,9 @@ export function renderSearchFormBlock (checkIn, checkOut) {
     </form>
     `
   )
+  const button = document.getElementById('search-btn');
+  button.onclick = function() {
+    search(searchData, (arg)=>{
+      console.log(arg)});
+  };
 }
