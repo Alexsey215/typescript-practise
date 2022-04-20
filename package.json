@@ -2,11 +2,13 @@
   "name": "typescript-project",
   "version": "1.0.0",
   "type": "module",
+  "main": "./public/scripts/index.js",
+  "types": "./public/scripts/types/",
   "scripts": {
     "build": "rd -r public\\\\scripts 2>null & tsc",
     "build:dev": "rd -r public\\\\scripts 2>null & tsc -p tsconfig-dev.json",
     "start": "http-server -p 3000",
-    "start:cli": "node public/scripts",
+    "start:cli": "node public/scripts/debounce.js",
     "lint": "eslint src --ext .js --ext .ts",
     "lint-fix": "eslint src --ext .js --ext .ts --fix"
   },
@@ -16,5 +18,9 @@
     "eslint": "^8.5.0",
     "http-server": "^14.0.0",
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "lodash.debounce": "^4.0.8"
   }
 }
+
